@@ -9,6 +9,7 @@ const isProduction = process.env.NODE_ENV == "production";
 const config = {
   entry: "./src/index.js",
   output: {
+    filename: 'bundle.js',
     path: path.resolve(__dirname, "dist"),
   },
   devServer: {
@@ -17,7 +18,7 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "index.html",
+      template: 'index.html'
     }),
 
     // Add your plugins here
@@ -26,10 +27,25 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-        type: "asset",
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
       },
-
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
+      },
+      {
+        test: /\.(csv|tsv)$/i,
+        use: ['csv-loader'],
+      },
+      {
+        test: /\.xml$/i,
+        use: ['xml-loader'],
+      },
       // Add your rules for custom modules here
       // Learn more about loaders from https://webpack.js.org/loaders/
     ],
