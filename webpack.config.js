@@ -1,20 +1,20 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
+import path from "path";
+import HtmlWebpackPlugin from "html-webpack-plugin";
 
-const isProduction = process.env.NODE_ENV == "production";
+//import { fileURLToPath } from 'url';
+//const __filename = fileURLToPath(import.meta.url);
+//const __dirname = path.resolve(__filename);
 
-const config = {
+export default {
   mode: process.env.NODE_ENV || 'development',
   entry: {
     index: './src/index.js',
-    print: './src/print.js',
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve('dist'),
     clean: true,
   },
   devServer: {
@@ -25,9 +25,6 @@ const config = {
     new HtmlWebpackPlugin({
       template: 'index.html'
     }),
-
-    // Add your plugins here
-    // Learn more about plugins from https://webpack.js.org/configuration/plugins/
   ],
   module: {
     rules: [
@@ -43,19 +40,6 @@ const config = {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: 'asset/resource',
       },
-      // Add your rules for custom modules here
-      // Learn more about loaders from https://webpack.js.org/loaders/
     ],
   },
-};
-
-module.exports = () => {
-  if (isProduction) {
-    config.mode = "production";
-
-    config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-  } else {
-    config.mode = "development";
-  }
-  return config;
 };

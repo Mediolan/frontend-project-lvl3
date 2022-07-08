@@ -2,6 +2,7 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "My webpack project",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode=production --node-env=production",
@@ -28,6 +29,7 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
     "html-webpack-plugin": "^5.5.0",
+    "on-change": "^4.0.1",
     "prettier": "^2.7.1",
     "style-loader": "^3.3.1",
     "webpack": "^5.73.0",
@@ -38,6 +40,8 @@
   "dependencies": {
     "@popperjs/core": "^2.11.5",
     "bootstrap": "^5.2.0-beta1",
-    "lodash": "^4.17.21"
+    "i18next": "^21.8.11",
+    "lodash": "^4.17.21",
+    "yup": "^0.32.11"
   }
 }
