@@ -1,12 +1,19 @@
-html {
-    overflow-x: auto;
-    overflow-y: scroll;
-}
 footer {
-    position: absolute;
+    position: static;
     bottom: 0;
     width: 100%;
 }
 .text-muted {
     color:rgb(108, 117, 125) !important;
+}
+
+.btn-sm, .btn-group-sm > .btn {
+    padding: .25rem .5rem;
+    font-size: .875rem;
+    border-radius: .2rem;
+}
+.btn-outline-primary:focus {
+    color: rgb(13, 110, 253);
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(13, 110, 253);
 }
