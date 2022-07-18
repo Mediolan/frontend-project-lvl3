@@ -3,16 +3,12 @@ import renderFeedback from './renders/renderFeedback.js';
 import renderModal from './renders/renderModal.js';
 import renderFeed from './renders/renderFeed.js';
 import renderPosts from './renders/renderPosts.js';
-import getData from './service.js';
 
 const watchedState = (state) => {
   const watcher = onChange(state, (path, value, previousValue, applyData) => {
     switch (path) {
       case 'validationStatus':
         renderFeedback(state, value);
-        break;
-      case 'links':
-        getData(watchedState(state), ...applyData.args);
         break;
       case 'feeds':
         renderFeed(...applyData.args);

@@ -17,7 +17,7 @@ const dataParser = (data) => {
     });
     return { feed, posts };
   }
-  throw new Error('validation.errors.invalidRSS');
+  throw new Error('RSS not found');
 };
 
 export default dataParser;

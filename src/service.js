@@ -10,30 +10,31 @@ const buildUrl = (url) => {
   return urlWithProxy.toString();
 };
 
-const getData = (watchedState, url) => {
+const getFeed = (watchedState, url) => {
   const newUrl = buildUrl(url);
   axios.get(newUrl)
-    .catch(() => {
-      watchedState.errorKey = 'validation.errors.netIssue';
-      watchedState.validationStatus = false;
-      throw new Error();
-    })
-    .then((response) => parser(response.data.contents))
-    .catch((e) => {
-      watchedState.errorKey = e.message;
-      watchedState.validationStatus = false;
-      throw new Error();
-    })
-    .then((parsedRSS) => {
+    .then((response) => {
+      const parsedRSS = parser(response.data.contents);
+      watchedState.validationStatus = true;
       const { feed, posts } = parsedRSS;
       feed.id = uniqueId();
       const postsWithId = posts.map((post) => ({
         ...post, id: uniqueId(), feedId: feed.id,
       }));
-      watchedState.validationStatus = true;
+      watchedState.links.push(url);
       watchedState.feeds.push(feed);
       watchedState.posts.push(...postsWithId);
+    })
+    .catch((e) => {
+      if (e.message === 'RSS not found') {
+        watchedState.errorKey = 'validation.errors.invalidRSS';
+      } else if (e.message === 'Request aborted') {
+        watchedState.errorKey = 'validation.errors.netIssue';
+      } else {
+        watchedState.errorKey = 'validation.errors.unknownError';
+      }
+      watchedState.validationStatus = false;
     });
 };
 
-export default getData;
+export default getFeed;
