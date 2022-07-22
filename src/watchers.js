@@ -8,7 +8,9 @@ const watchedState = (state) => {
   const watcher = onChange(state, (path, value, previousValue, applyData) => {
     switch (path) {
       case 'validationStatus':
-        renderFeedback(state, value);
+        if (value !== null) {
+          renderFeedback(watchedState(state), value);
+        }
         break;
       case 'feeds':
         renderFeed(...applyData.args);

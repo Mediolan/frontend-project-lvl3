@@ -3,9 +3,8 @@ import renderBorder from './renderBorder.js';
 
 const renderPosts = (posts) => {
   const column = renderBorder('.posts');
-
   // eslint-disable-next-line array-callback-return
-  posts.map((post) => {
+  const renderedPosts = posts.map((post) => {
     const li = document.createElement('li');
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
     const button = document.createElement('button');
@@ -24,9 +23,9 @@ const renderPosts = (posts) => {
     aTag.textContent = post.title;
     button.setAttribute('data-id', post.id);
     li.append(aTag, button);
-
-    column.querySelector('.list-group').prepend(li);
+    return li;
   });
+  column.querySelector('.list-group').prepend(...renderedPosts);
 };
 
 export default renderPosts;

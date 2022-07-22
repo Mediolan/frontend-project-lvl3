@@ -17,7 +17,7 @@ const validationForm = (watchedState, url) => {
   const schema = yup.string()
     .url()
     .min(1)
-    .notOneOf(watchedState.links);
+    .notOneOf([watchedState.links.map((link) => link.url)]);
 
   schema.validate(optimazedUrl)
     .then(() => getFeed(watchedState, optimazedUrl))
