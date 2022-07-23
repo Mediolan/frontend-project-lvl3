@@ -15,6 +15,11 @@ const getFeed = (watchedState, url) => {
   const newUrl = buildUrl(url);
   const id = uniqueId();
   axios.get(newUrl)
+    .catch(() => {
+      watchedState.errorKey = 'validation.errors.netIssue';
+      watchedState.validationStatus = false;
+      watchedState.formMode = 'active';
+    })
     .then((response) => {
       const parsedRSS = parser(response.data.contents);
       watchedState.validationStatus = true;
@@ -31,8 +36,6 @@ const getFeed = (watchedState, url) => {
     .catch((e) => {
       if (e.message === 'RSS not found') {
         watchedState.errorKey = 'validation.errors.invalidRSS';
-      } else if (e.message === 'Request aborted') {
-        watchedState.errorKey = 'validation.errors.netIssue';
       } else {
         watchedState.errorKey = 'validation.errors.unknownError';
       }
