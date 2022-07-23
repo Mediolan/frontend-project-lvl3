@@ -26,6 +26,7 @@ const getFeed = (watchedState, url) => {
       watchedState.links.push({ url, id });
       watchedState.feeds.push(feed);
       watchedState.posts.push(...postsWithId);
+      watchedState.formMode = 'active';
     })
     .catch((e) => {
       if (e.message === 'RSS not found') {
@@ -36,6 +37,7 @@ const getFeed = (watchedState, url) => {
         watchedState.errorKey = 'validation.errors.unknownError';
       }
       watchedState.validationStatus = false;
+      watchedState.formMode = 'active';
     });
 };
 

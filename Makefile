@@ -14,4 +14,10 @@ test:
 lint:
 	npx eslint .
 
+link:
+	sudo npm link
+	
+publish:
+	npm publish --dry-run
+
 .PHONY: test

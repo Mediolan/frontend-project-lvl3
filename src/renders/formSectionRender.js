@@ -1,7 +1,18 @@
 /* eslint-disable no-param-reassign */
-import i18next from 'i18next';
+const formStatusSwitcher = (mode) => {
+  const submitButton = document.querySelector('#url-submit');
+  const input = document.querySelector('#url-input');
+  if (mode === 'disable') {
+    submitButton.setAttribute('disabled', '');
+    input.setAttribute('readonly', true);
+  } else {
+    submitButton.removeAttribute('disabled');
+    input.removeAttribute('readonly');
+  }
+};
 
 const renderFeedback = (watchedState, status) => {
+  const i18Inst = watchedState.i18n;
   const inputField = document.getElementById('url-input');
   const feedbackP = document.querySelector('.feedback');
   if (inputField.classList.contains('is-invalid')) {
@@ -13,14 +24,12 @@ const renderFeedback = (watchedState, status) => {
     inputField.focus();
     document.querySelector('.rss-form').reset();
     feedbackP.classList.add('text-success');
-    document.querySelector('.feedback').textContent = i18next.t('validation.success');
-    watchedState.validationStatus = null;
+    document.querySelector('.feedback').textContent = i18Inst.t('validation.success');
   } else {
     inputField.classList.add('is-invalid');
     feedbackP.classList.add('text-danger');
-    document.querySelector('.feedback').textContent = i18next.t(watchedState.errorKey);
-    watchedState.validationStatus = null;
+    document.querySelector('.feedback').textContent = i18Inst.t(watchedState.errorKey);
   }
 };
 
-export default renderFeedback;
+export { formStatusSwitcher, renderFeedback };

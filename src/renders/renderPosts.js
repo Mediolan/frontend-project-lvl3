@@ -1,8 +1,7 @@
-import i18next from 'i18next';
 import renderBorder from './renderBorder.js';
 
-const renderPosts = (posts) => {
-  const column = renderBorder('.posts');
+const renderPosts = (posts, i18Inst) => {
+  const column = renderBorder('.posts', i18Inst);
   // eslint-disable-next-line array-callback-return
   const renderedPosts = posts.map((post) => {
     const li = document.createElement('li');
@@ -12,7 +11,7 @@ const renderPosts = (posts) => {
     button.setAttribute('type', 'button');
     button.setAttribute('data-bs-toggle', 'modal');
     button.setAttribute('data-bs-target', '#modal');
-    button.textContent = i18next.t('contents.view');
+    button.textContent = i18Inst.t('contents.view');
 
     const aTag = document.createElement('a');
     aTag.classList.add('fw-bold');

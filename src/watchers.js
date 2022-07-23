@@ -1,5 +1,5 @@
 import onChange from 'on-change';
-import renderFeedback from './renders/renderFeedback.js';
+import { formStatusSwitcher, renderFeedback } from './renders/formSectionRender.js';
 import renderModal from './renders/renderModal.js';
 import renderFeed from './renders/renderFeed.js';
 import renderPosts from './renders/renderPosts.js';
@@ -7,18 +7,21 @@ import renderPosts from './renders/renderPosts.js';
 const watchedState = (state) => {
   const watcher = onChange(state, (path, value, previousValue, applyData) => {
     switch (path) {
+      case 'formMode':
+        formStatusSwitcher(value);
+        break;
       case 'validationStatus':
         if (value !== null) {
           renderFeedback(watchedState(state), value);
         }
         break;
       case 'feeds':
-        renderFeed(...applyData.args);
+        renderFeed(...applyData.args, state.i18n);
         break;
       case 'posts':
-        renderPosts(applyData.args);
+        renderPosts(applyData.args, state.i18n);
         break;
-      case 'uiState.modal':
+      case 'uiState.activeModal':
         renderModal(state, value);
         break;
       default:

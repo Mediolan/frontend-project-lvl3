@@ -1,6 +1,4 @@
-import i18next from 'i18next';
-
-const renderBorder = (columnType) => {
+const renderBorder = (columnType, i18Inst) => {
   const column = document.querySelector(columnType);
   if (column.childNodes.length !== 0) {
     return column;
@@ -13,7 +11,7 @@ const renderBorder = (columnType) => {
 
   const cardTitle = document.createElement('h2');
   cardTitle.classList.add('card-title', 'h4');
-  cardTitle.textContent = i18next.t(`contents${columnType}`);
+  cardTitle.textContent = i18Inst.t(`contents${columnType}`);
 
   cardBody.append(cardTitle);
 

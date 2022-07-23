@@ -24,6 +24,7 @@ const validationForm = (watchedState, url) => {
     .catch((e) => {
       watchedState.errorKey = e.errors[0].key;
       watchedState.validationStatus = false;
+      watchedState.formMode = 'active';
     });
 };
 

@@ -5,23 +5,33 @@ import resources from './locales/ru.js';
 import { updateFeed } from './service.js';
 
 export default () => {
-  i18next.init({
-    lng: 'ru',
-    debug: true,
-    resources,
+  const promise = new Promise((resolve) => {
+    const i18Instance = i18next.createInstance();
+    i18Instance.init({
+      lng: 'ru',
+      debug: true,
+      resources,
+    });
+    resolve(i18Instance);
   });
-  const state = {
-    links: [],
-    errorKey: '',
-    validationStatus: null,
-    feeds: [],
-    posts: [],
-    uiState: {
-      modal: '',
-    },
-    seenPosts: '',
-    renderStatus: 'finish',
-  };
-  handler(watchedState(state));
-  setTimeout(() => updateFeed(state), 5000);
+  promise.then((i18nInst) => {
+    const state = {
+      i18n: i18nInst,
+      links: [],
+      errorKey: '',
+      validationStatus: null,
+      feeds: [],
+      posts: [],
+      uiState: {
+        avtiveModal: null,
+        seenPosts: [],
+      },
+      formMode: null,
+    };
+    return state;
+  })
+    .then((state) => {
+      handler(watchedState(state));
+      updateFeed(state);
+    });
 };
