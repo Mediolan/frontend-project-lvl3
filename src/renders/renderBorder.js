@@ -22,7 +22,7 @@ const renderBorder = (columnType, i18Inst) => {
 
   column.append(cardBorder);
 
-  return column;
+  return { column };
 };
 
 export default renderBorder;

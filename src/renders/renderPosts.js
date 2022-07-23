@@ -1,7 +1,7 @@
 import renderBorder from './renderBorder.js';
 
 const renderPosts = (posts, i18Inst) => {
-  const column = renderBorder('.posts', i18Inst);
+  const { column } = renderBorder('.posts', i18Inst);
   // eslint-disable-next-line array-callback-return
   const renderedPosts = posts.map((post) => {
     const li = document.createElement('li');

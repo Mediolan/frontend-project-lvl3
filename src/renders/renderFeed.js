@@ -1,7 +1,7 @@
 import renderBorder from './renderBorder.js';
 
 const renderFeed = (data, i18Inst) => {
-  const column = renderBorder('.feeds', i18Inst);
+  const { column } = renderBorder('.feeds', i18Inst);
 
   const li = document.createElement('li');
   li.classList.add('list-group-item', 'border-0', 'border-end-0');
