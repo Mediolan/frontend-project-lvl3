@@ -4,7 +4,7 @@ const ru = {
       errors: {
         invalidURL: 'Ссылка должна быть валидным URL',
         invalidRSS: 'Ресурс не содержит валидный RSS',
-        notUnique: 'Ссылка должна быть уникальной',
+        notUnique: 'RSS уже существует',
         notEmpty: 'Не должно быть пустым',
         netIssue: 'Ошибка сети',
         unknownError: 'Неизвестная ошибка. Что-то пошло не так',
