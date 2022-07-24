@@ -1,7 +1,7 @@
 const renderBorder = (columnType, i18Inst) => {
   const column = document.querySelector(columnType);
   if (column.childNodes.length !== 0) {
-    return column;
+    return { column };
   }
   const cardBorder = document.createElement('div');
   cardBorder.classList.add('card', 'border-0');
