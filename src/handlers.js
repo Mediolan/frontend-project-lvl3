@@ -12,17 +12,20 @@ const handlers = (watchedState) => {
     const optimazedUrl = inputUrl.replace(/\/$/, '').trim().toLowerCase();
 
     validationForm(watchedState, optimazedUrl)
-      .catch((err) => {
-        watchedState.form.errorKey = err.message;
-      })
       .then(() => {
-        watchedState.form.state = 'filling';
         watchedState.form.errorKey = null;
         watchedState.feedLoader.state = 'downloading';
         return getFeed(watchedState, optimazedUrl);
       })
-      .catch((err) => watchedState.feedLoader.errorKey = err.message)
-      .finally(() => watchedState.feedLoader.state = 'ready');
+      .catch((err) => {
+        if (err.message.endsWith('notUnique') || err.message.endsWith('invalidURL')) {
+          watchedState.form.state = 'filling';
+          watchedState.form.errorKey = err.message;
+        } else {
+          watchedState.feedLoader.errorKey = err.message;
+        }
+      })
+      .finally(() => { watchedState.feedLoader.state = 'ready'; });
   });
 
   const postsColumn = document.querySelector('.posts');

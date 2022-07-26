@@ -8,7 +8,7 @@ const watchedState = (state) => {
   const watcher = onChange(state, (path, value, previousValue, applyData) => {
     switch (path) {
       case 'form.state':
-        if (value === 'validation') formStatusSwitcher(value);
+        formStatusSwitcher(value);
         break;
       case 'feedLoader.state':
         if (value === 'success') renderFeedback(state.i18n, value);

@@ -1,18 +1,18 @@
 /* eslint-disable no-param-reassign */
 const formStatusSwitcher = (status) => {
   const submitButton = document.querySelector('#url-submit');
-  const input = document.querySelector('#url-input');
+  const inputField = document.querySelector('#url-input');
   if (status === 'validation') {
     submitButton.setAttribute('disabled', '');
-    input.setAttribute('readonly', true);
-  } else {
+    inputField.setAttribute('readonly', true);
+  } else if (!inputField.classList.contains('disabled')) {
     submitButton.removeAttribute('disabled');
-    input.removeAttribute('readonly');
+    inputField.removeAttribute('readonly');
   }
 };
 
 const renderFeedback = (i18Inst, message) => {
-  const inputField = document.getElementById('url-input');
+  const inputField = document.querySelector('#url-input');
   const feedbackP = document.querySelector('.feedback');
   if (inputField.classList.contains('is-invalid')) {
     inputField.classList.remove('is-invalid');
