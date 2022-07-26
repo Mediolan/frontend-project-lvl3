@@ -25,7 +25,10 @@ const handlers = (watchedState) => {
           watchedState.feedLoader.errorKey = err.message;
         }
       })
-      .finally(() => { watchedState.feedLoader.state = 'ready'; });
+      .finally(() => {
+        watchedState.form.state = 'filling';
+        watchedState.feedLoader.state = 'ready';
+      });
   });
 
   const postsColumn = document.querySelector('.posts');
