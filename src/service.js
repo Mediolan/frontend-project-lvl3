@@ -12,7 +12,7 @@ const buildUrl = (url) => {
 
 const getFeed = (watchedState, url) => {
   const newUrl = buildUrl(url);
-  axios.get(newUrl)
+  return axios.get(newUrl)
     .catch(() => {
       throw new Error('validation.errors.netIssue');
     })
@@ -28,6 +28,7 @@ const getFeed = (watchedState, url) => {
       watchedState.feeds.push(feed);
       watchedState.posts.push(...postsWithId);
       watchedState.feedLoader.state = 'success';
+      watchedState.feedLoader.errorKey = null;
     })
     .catch((e) => {
       if (e.message === 'RSS not found') {

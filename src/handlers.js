@@ -10,24 +10,19 @@ const handlers = (watchedState) => {
     watchedState.form.state = 'validation';
     const inputUrl = new FormData(e.target).get('url');
     const optimazedUrl = inputUrl.replace(/\/$/, '').trim().toLowerCase();
+
     validationForm(watchedState, optimazedUrl)
+      .catch((err) => {
+        watchedState.form.errorKey = err.message;
+      })
       .then(() => {
         watchedState.form.state = 'filling';
         watchedState.form.errorKey = null;
         watchedState.feedLoader.state = 'downloading';
-        getFeed(watchedState, optimazedUrl);
-        watchedState.feedLoader.state = 'ready';
-        watchedState.feedLoader.errorKey = null;
+        return getFeed(watchedState, optimazedUrl);
       })
-      .catch((err) => {
-        if (err.message.endsWith('notUnique') || err.message.endsWith('invalidURL')) {
-          watchedState.form.errorKey = err.message;
-          watchedState.feedLoader.state = 'ready';
-        } else {
-          watchedState.feedLoader.errorKey = err.message;
-          watchedState.feedLoader.state = 'ready';
-        }
-      });
+      .catch((err) => watchedState.feedLoader.errorKey = err.message)
+      .finally(() => watchedState.feedLoader.state = 'ready');
   });
 
   const postsColumn = document.querySelector('.posts');
