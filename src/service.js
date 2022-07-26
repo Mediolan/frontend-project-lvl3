@@ -13,9 +13,9 @@ const buildUrl = (url) => {
 const getFeed = (watchedState, url) => {
   const newUrl = buildUrl(url);
   return axios.get(newUrl)
-    .catch(() => {
-      throw new Error('validation.errors.netIssue');
-    })
+   // .catch(() => {
+   //   throw new Error('validation.errors.netIssue');
+    //})
     .then((response) => {
       const id = uniqueId();
       const parsedRSS = parser(response.data.contents);
@@ -31,6 +31,9 @@ const getFeed = (watchedState, url) => {
       watchedState.feedLoader.errorKey = null;
     })
     .catch((e) => {
+      if (e.request) {
+        throw new Error('validation.errors.netIssue');
+      }
       if (e.message === 'RSS not found') {
         throw new Error('validation.errors.invalidRSS');
       } else {
