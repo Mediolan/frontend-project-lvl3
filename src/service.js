@@ -13,9 +13,6 @@ const buildUrl = (url) => {
 const getFeed = (watchedState, url) => {
   const newUrl = buildUrl(url);
   return axios.get(newUrl)
-   // .catch(() => {
-   //   throw new Error('validation.errors.netIssue');
-    //})
     .then((response) => {
       const id = uniqueId();
       const parsedRSS = parser(response.data.contents);
