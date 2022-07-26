@@ -7,12 +7,17 @@ import renderPosts from './renders/renderPosts.js';
 const watchedState = (state) => {
   const watcher = onChange(state, (path, value, previousValue, applyData) => {
     switch (path) {
-      case 'formMode':
-        formStatusSwitcher(value);
+      case 'form.state':
+        if (value === 'validation') formStatusSwitcher(value);
         break;
-      case 'validationStatus':
+      case 'feedLoader.state':
+        if (value === 'success') renderFeedback(state.i18n, value);
+        if (value === 'ready') formStatusSwitcher(value);
+        break;
+      case 'form.errorKey':
+      case 'feedLoader.errorKey':
         if (value !== null) {
-          renderFeedback(watchedState(state), value);
+          renderFeedback(state.i18n, value);
         }
         break;
       case 'feeds':

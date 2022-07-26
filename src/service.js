@@ -2,7 +2,6 @@
 import axios from 'axios';
 import uniqueId from 'lodash/uniqueId.js';
 import parser from './parser.js';
-import renderPosts from './renders/renderPosts.js';
 
 const buildUrl = (url) => {
   const urlWithProxy = new URL('/get', 'https://allorigins.hexlet.app');
@@ -13,16 +12,13 @@ const buildUrl = (url) => {
 
 const getFeed = (watchedState, url) => {
   const newUrl = buildUrl(url);
-  const id = uniqueId();
   axios.get(newUrl)
     .catch(() => {
-      watchedState.errorKey = 'validation.errors.netIssue';
-      watchedState.validationStatus = false;
-      watchedState.formMode = 'active';
+      throw new Error('validation.errors.netIssue');
     })
     .then((response) => {
+      const id = uniqueId();
       const parsedRSS = parser(response.data.contents);
-      watchedState.validationStatus = true;
       const { feed, posts } = parsedRSS;
       feed.id = id;
       const postsWithId = posts.map((post) => ({
@@ -31,27 +27,25 @@ const getFeed = (watchedState, url) => {
       watchedState.links.push({ url, id });
       watchedState.feeds.push(feed);
       watchedState.posts.push(...postsWithId);
-      watchedState.formMode = 'active';
+      watchedState.feedLoader.state = 'success';
     })
     .catch((e) => {
       if (e.message === 'RSS not found') {
-        watchedState.errorKey = 'validation.errors.invalidRSS';
+        throw new Error('validation.errors.invalidRSS');
       } else {
-        watchedState.errorKey = 'validation.errors.unknownError';
+        throw new Error('validation.errors.unknownError');
       }
-      watchedState.validationStatus = false;
-      watchedState.formMode = 'active';
     });
 };
 
-export const updateFeed = (state) => {
-  if (state.links.length === 0) {
-    setTimeout(() => updateFeed(state), 5000);
+export const updateFeed = (watchedState) => {
+  if (watchedState.links.length === 0) {
+    setTimeout(() => updateFeed(watchedState), 5000);
     return;
   }
-  const promises = state.links.map((link) => {
+  const promises = watchedState.links.map((link) => {
     const newUrl = buildUrl(link.url);
-    const comparedFeed = state.posts.filter((post) => post.feedId === link.id);
+    const comparedFeed = watchedState.posts.filter((post) => post.feedId === link.id);
     return axios.get(newUrl).then((response) => {
       const parsedRSS = parser(response.data.contents);
       const newPosts = parsedRSS.posts.reduce((acc, post) => {
@@ -63,10 +57,13 @@ export const updateFeed = (state) => {
       return newPosts;
     });
   });
-  const promise = Promise.all(promises);
-  promise.then((data) => renderPosts(...data))
+  Promise.all(promises)
+    .then((data) => {
+      const posts = data.flat();
+      if (posts.length !== 0) watchedState.posts.push(...posts);
+    })
     .catch((e) => { throw new Error(e); })
-    .finally(() => setTimeout(() => updateFeed(state), 5000));
+    .finally(() => setTimeout(() => updateFeed(watchedState), 5000));
 };
 
 export default getFeed;

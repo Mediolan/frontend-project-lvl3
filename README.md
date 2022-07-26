@@ -3,4 +3,4 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/e98b077246bbebddd9e4/maintainability)](https://codeclimate.com/github/Mediolan/frontend-project-lvl3/maintainability)
 
-[RSS Агрегатор](https://frontend-project-lvl3-topaz-chi.vercel.app/)
+[RSS Aggregator](https://frontend-project-lvl3-topaz-chi.vercel.app/)

@@ -1,17 +1,14 @@
 /* eslint-disable no-param-reassign */
 import * as yup from 'yup';
 import { setLocale } from 'yup';
-import getFeed from './service.js';
 
-const validationForm = (watchedState, url) => {
-  const optimazedUrl = url.replace(/\/$/, '').trim().toLowerCase();
+const validationForm = (watchedState, optimazedUrl) => {
   setLocale({
     mixed: {
-      notOneOf: () => ({ key: 'validation.errors.notUnique' }),
+      notOneOf: () => ('validation.errors.notUnique'),
     },
     string: {
-      url: () => ({ key: 'validation.errors.invalidURL' }),
-      min: () => ({ key: 'validation.errors.notEmpty' }),
+      url: () => ('validation.errors.invalidURL'),
     },
   });
   const schema = yup.string()
@@ -19,13 +16,7 @@ const validationForm = (watchedState, url) => {
     .min(1)
     .notOneOf([watchedState.links.map((link) => link.url)]);
 
-  schema.validate(optimazedUrl)
-    .then(() => getFeed(watchedState, optimazedUrl))
-    .catch((e) => {
-      watchedState.errorKey = e.errors[0].key;
-      watchedState.validationStatus = false;
-      watchedState.formMode = 'active';
-    });
+  return schema.validate(optimazedUrl);
 };
 
 export default validationForm;

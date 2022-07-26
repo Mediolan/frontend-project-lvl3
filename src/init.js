@@ -18,20 +18,25 @@ export default () => {
     const state = {
       i18n: i18nInst,
       links: [],
-      errorKey: '',
-      validationStatus: null,
+      form: {
+        state: 'filling',
+        errorKey: null,
+      },
+      feedLoader: {
+        state: 'ready',
+        errorKey: null,
+      },
       feeds: [],
       posts: [],
       uiState: {
         avtiveModal: null,
         seenPosts: [],
       },
-      formMode: null,
     };
     return state;
   })
     .then((state) => {
       handler(watchedState(state));
-      updateFeed(state);
+      updateFeed(watchedState(state));
     });
 };

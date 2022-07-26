@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
-const formStatusSwitcher = (mode) => {
+const formStatusSwitcher = (status) => {
   const submitButton = document.querySelector('#url-submit');
   const input = document.querySelector('#url-input');
-  if (mode === 'disable') {
+  if (status === 'validation') {
     submitButton.setAttribute('disabled', '');
     input.setAttribute('readonly', true);
   } else {
@@ -11,15 +11,14 @@ const formStatusSwitcher = (mode) => {
   }
 };
 
-const renderFeedback = (watchedState, status) => {
-  const i18Inst = watchedState.i18n;
+const renderFeedback = (i18Inst, message) => {
   const inputField = document.getElementById('url-input');
   const feedbackP = document.querySelector('.feedback');
   if (inputField.classList.contains('is-invalid')) {
     inputField.classList.remove('is-invalid');
     feedbackP.classList.remove('text-danger');
   }
-  if (status) {
+  if (message === 'success') {
     document.querySelector('.feedback').textContent = '';
     inputField.focus();
     document.querySelector('.rss-form').reset();
@@ -28,7 +27,7 @@ const renderFeedback = (watchedState, status) => {
   } else {
     inputField.classList.add('is-invalid');
     feedbackP.classList.add('text-danger');
-    document.querySelector('.feedback').textContent = i18Inst.t(watchedState.errorKey);
+    document.querySelector('.feedback').textContent = i18Inst.t(message);
   }
 };
 
