@@ -19,7 +19,6 @@ const handlers = (watchedState) => {
       })
       .catch((err) => {
         if (err.message.endsWith('notUnique') || err.message.endsWith('invalidURL')) {
-          watchedState.form.state = 'filling';
           watchedState.form.errorKey = err.message;
         } else {
           watchedState.feedLoader.errorKey = err.message;
